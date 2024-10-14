@@ -1,5 +1,18 @@
-# Xcode
+autom4te*
+config.cache
+config.log
+config.status
+configure~
+Makefile
+libtool
+.deps
+.dirstamp
+.libs
+*.lo
+*.o
+*.la
+*.lai
 .DS_Store
-*.xcworkspace
-!default.xcworkspace
 xcuserdata
+*.xcworkspace
+SDL2_gfx.pc

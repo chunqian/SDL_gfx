@@ -1,0 +1,40 @@
+include(FeatureSummary)
+set_package_properties(SDL2_gfx PROPERTIES
+    URL "https://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/"
+    DESCRIPTION "Support for graphics primitives and transformations with Simple Directmedia Layer"
+)
+
+set(SDL2_gfx_FOUND ON)
+
+set(SDL2GFX_VENDORED  @SDL2GFX_VENDORED@)
+
+set(SDL2GFX_SDL2_REQUIRED_VERSION  @SDL_REQUIRED_VERSION@)
+
+include(CMakeFindDependencyMacro)
+
+if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/SDL2_gfx-shared-targets.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/SDL2_gfx-shared-targets.cmake")
+endif()
+
+if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/SDL2_gfx-static-targets.cmake")
+    if(SDL2GFX_VENDORED)
+        include(CheckLanguage)
+        check_language(CXX)
+        if(NOT CMAKE_CXX_COMPILER AND NOT _sdl2gfx_nowarning)
+            message(WARNING "CXX language not enabled. Linking to SDL2_gfx::SDL2_gfx-static might fail.")
+        endif()
+    endif()
+    include("${CMAKE_CURRENT_LIST_DIR}/SDL2_gfx-static-targets.cmake")
+endif()
+
+if(NOT SDL2GFX_VENDORED)
+    set(_sdl_cmake_module_path "${CMAKE_MODULE_PATH}")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+
+    if(TARGET SDL2_gfx::SDL2_gfx-static)
+        find_dependency(SDL2)
+    endif()
+
+    set(CMAKE_MODULE_PATH "${_sdl_cmake_module_path}")
+    unset(_sdl_cmake_module_path)
+endif()
